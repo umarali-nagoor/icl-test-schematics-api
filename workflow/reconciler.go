@@ -35,3 +35,12 @@ func (r *Reconciler) syncAll(ctx context.Context, items []*Workspace) {
 	}
 	r.logger.Infof("Finished operation")
 }
+
+func (r *Reconciler) watchJobs(ctx context.Context, jobs []*Job) {
+	for {
+		for _, job := range jobs {
+			r.logger.Infof("watching job %+v", job)
+		}
+		time.Sleep(time.Second)
+	}
+}
