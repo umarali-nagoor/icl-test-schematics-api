@@ -50,3 +50,14 @@ func (h *ResourceHandler) ApplyPlan(ctx context.Context, payload map[string]inte
 	h.logger.Infof("Applying plan with payload %s", string(body))
 	return h.service.Apply(ctx, payload)
 }
+
+func (h *ResourceHandler) AuditPlan(ctx context.Context, id string, plan map[string]interface{}) error {
+	b, _ := json.Marshal(plan)
+	h.logger.Infof("audit plan for workspace %s: %s", id, string(b))
+	ws, err := h.service.Get(ctx, id)
+	if ws == nil {
+		h.logger.Errorf("workspace %s not found for plan audit", id)
+		return ErrNotFound
+	}
+	return err
+}
