@@ -50,3 +50,17 @@ func (h *ResourceHandler) ApplyPlan(ctx context.Context, payload map[string]inte
 	h.logger.Infof("Applying plan with payload %s", string(body))
 	return h.service.Apply(ctx, payload)
 }
+
+func (h *ResourceHandler) ListWorkspaces(ctx context.Context, req *ListRequest) ([]*Workspace, error) {
+	h.logger.Infof("Entering ListWorkspaces, request: %+v", req)
+	all, err := h.service.List(ctx, req)
+	if err != nil {
+		h.logger.Errorf("list workspaces failed: %v", err)
+		return nil, err
+	}
+	for _, ws := range all {
+		h.logger.Infof("workspace: %+v", ws)
+	}
+	h.logger.Infof("Exiting ListWorkspaces, result: %+v", all)
+	return all, nil
+}
